@@ -1,0 +1,405 @@
+
+
+*********** BEGIN NEW LOG ************** (2014-04-11 09:22:10.512000) PID=3296
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-11 10:16:06.012000) PID=3588
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-14 09:10:45.749000) PID=2480
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-14 16:03:47.998000) PID=2872
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-15 09:04:15.628000) PID=3576
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-15 14:40:30.621000) PID=5008
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-15 15:19:04.132000) PID=2596
+
+Apr 15 15:19:12 E geometry: return_code = -1073741510
+Error Output:
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-15 15:19:43.148000) PID=5024
+
+Apr 15 15:19:54 E geometry: return_code = -1073741510
+Error Output:
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-15 15:20:02.882000) PID=2224
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-24 09:38:28.068000) PID=4252
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-24 09:38:46.318000) PID=2176
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-24 09:39:28.193000) PID=4160
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-25 08:24:35.255000) PID=252
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-25 11:55:19.030000) PID=1824
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-28 11:31:53.897000) PID=3508
+
+Apr 28 11:32:20 C power_hook: Caught exception: RuntimeError("PFE27_DMZ1: can't connect: server heartbeat hasn't been updated in 1 day",)
+Apr 28 11:32:20 E power_hook: Run aborted: Traceback (most recent call last):
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\drivers\caseiterdriver.py", line 699, in _model_execute
+    self.workflow.run(case_id=self._server_cases[server][0].uuid)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 252, in run
+    super(Driver, self).run(force, ffd_order, case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 265, in execute
+    self.run_iteration()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 324, in run_iteration
+    wf.run(ffd_order=self.ffd_order, case_id=self._case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "Z:\NASA\RTM\Research\LDI2\2\ncccomponent.py", line 1169, in execute
+    super(NCCcomponent, self).execute()
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\components\external_code.py", line 150, in execute
+    return_code, error_msg = self._execute_remote()
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\components\external_code.py", line 271, in _execute_remote
+    self._server, server_info = RAM.allocate(rdesc)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\resource.py", line 322, in allocate
+    ram = ResourceAllocationManager._get_instance()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\resource.py", line 195, in _get_instance
+    ResourceAllocationManager._RAM = ResourceAllocationManager()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\resource.py", line 137, in __init__
+    self._configure(config_filename)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\resource.py", line 186, in _configure
+    allocator.configure(cfg)
+  File "C:\OpenMDAO-Framework\devenv\lib\site-packages\nas_access-0.4-py2.7.egg\nas_access\proxy.py", line 104, in configure
+    raise RuntimeError("%s: can't connect: %s" % (self.name, exc))
+RuntimeError: PFE27_DMZ1: can't connect: server heartbeat hasn't been updated in 1 day
+
+
+*********** BEGIN NEW LOG ************** (2014-04-28 11:44:59.397000) PID=588
+
+Apr 29 06:38:46 E PFE27_DMZ1/Sim-3: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode 1: stdout:  stderr: FATAL ERROR: Network error: Connection timed out
+
+retrying...
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:40:47.885000) PID=4164
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:42:40.776000) PID=4132
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:44:20.823000) PID=4128
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:44:53.870000) PID=4868
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:45:40.510000) PID=4516
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:46:23.948000) PID=4480
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:47:03.448000) PID=4520
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:47:47.963000) PID=2080
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:48:09.620000) PID=2948
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:48:41.010000) PID=3696
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 10:50:48.995000) PID=4700
+
+Apr 29 12:08:53 W nonreacting_driver: Max iterations exceeded without convergence.
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 16:43:36.925000) PID=2820
+
+Apr 29 16:44:05 C power_hook: Caught exception: TypeError('',)
+Apr 29 16:44:05 E power_hook: Run aborted: Traceback (most recent call last):
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\drivers\caseiterdriver.py", line 699, in _model_execute
+    self.workflow.run(case_id=self._server_cases[server][0].uuid)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 252, in run
+    super(Driver, self).run(force, ffd_order, case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 265, in execute
+    self.run_iteration()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 324, in run_iteration
+    wf.run(ffd_order=self.ffd_order, case_id=self._case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "Z:\NASA\RTM\Research\LDI2\2\ncccomponent.py", line 519, in execute
+    prev_dir = os.path.join(Path('Tecplot'), '_'.join(['Sim-'].extend(prev_config)), 'Input')
+TypeError
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 16:46:50.974000) PID=4652
+
+Apr 29 16:47:14 C power_hook: Caught exception: TypeError('',)
+Apr 29 16:47:14 E power_hook: Run aborted: Traceback (most recent call last):
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\drivers\caseiterdriver.py", line 699, in _model_execute
+    self.workflow.run(case_id=self._server_cases[server][0].uuid)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 252, in run
+    super(Driver, self).run(force, ffd_order, case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 265, in execute
+    self.run_iteration()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 324, in run_iteration
+    wf.run(ffd_order=self.ffd_order, case_id=self._case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "Z:\NASA\RTM\Research\LDI2\2\ncccomponent.py", line 519, in execute
+    print '_'.join(['Sim-'].extend(prev_config))
+TypeError
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 16:49:09.602000) PID=4708
+
+Apr 29 16:49:32 C power_hook: Caught exception: TypeError('',)
+Apr 29 16:49:32 E power_hook: Run aborted: Traceback (most recent call last):
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\drivers\caseiterdriver.py", line 699, in _model_execute
+    self.workflow.run(case_id=self._server_cases[server][0].uuid)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 252, in run
+    super(Driver, self).run(force, ffd_order, case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 265, in execute
+    self.run_iteration()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 324, in run_iteration
+    wf.run(ffd_order=self.ffd_order, case_id=self._case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "Z:\NASA\RTM\Research\LDI2\2\ncccomponent.py", line 520, in execute
+    print '_'.join(['Sim-'].extend(prev_config))
+TypeError
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 16:50:51.487000) PID=3576
+
+Apr 29 16:51:12 C power_hook: Caught exception: TypeError('',)
+Apr 29 16:51:12 E power_hook: Run aborted: Traceback (most recent call last):
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\drivers\caseiterdriver.py", line 699, in _model_execute
+    self.workflow.run(case_id=self._server_cases[server][0].uuid)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 252, in run
+    super(Driver, self).run(force, ffd_order, case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 265, in execute
+    self.run_iteration()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 324, in run_iteration
+    wf.run(ffd_order=self.ffd_order, case_id=self._case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "Z:\NASA\RTM\Research\LDI2\2\ncccomponent.py", line 520, in execute
+    print '_'.join(['Sim-'].extend([prev_config]))
+TypeError
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 16:52:24.816000) PID=4820
+
+Apr 29 16:52:47 C power_hook: Caught exception: TypeError('',)
+Apr 29 16:52:47 E power_hook: Run aborted: Traceback (most recent call last):
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\drivers\caseiterdriver.py", line 699, in _model_execute
+    self.workflow.run(case_id=self._server_cases[server][0].uuid)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 252, in run
+    super(Driver, self).run(force, ffd_order, case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 265, in execute
+    self.run_iteration()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 324, in run_iteration
+    wf.run(ffd_order=self.ffd_order, case_id=self._case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "Z:\NASA\RTM\Research\LDI2\2\ncccomponent.py", line 519, in execute
+    print '_'.join(['Sim-'].extend(prev_config))
+TypeError
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 16:53:47.857000) PID=3932
+
+Apr 29 16:54:10 C power_hook: Caught exception: TypeError('',)
+Apr 29 16:54:10 E power_hook: Run aborted: Traceback (most recent call last):
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\drivers\caseiterdriver.py", line 699, in _model_execute
+    self.workflow.run(case_id=self._server_cases[server][0].uuid)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 252, in run
+    super(Driver, self).run(force, ffd_order, case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 265, in execute
+    self.run_iteration()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 324, in run_iteration
+    wf.run(ffd_order=self.ffd_order, case_id=self._case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "Z:\NASA\RTM\Research\LDI2\2\ncccomponent.py", line 519, in execute
+    print '_'.join(['Sim-'].extend([prev_config]))
+TypeError
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:11:14.363000) PID=2128
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:14:57.343000) PID=3868
+
+Apr 29 17:19:45 E PFE27_DMZ1/Sim-1: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode -1073741510: stdout:  stderr: 
+retrying...
+Apr 29 17:19:45 E PFE27_DMZ1/Sim-1: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode -1073741510: stdout:  stderr: 
+retrying...
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:23:12.014000) PID=3908
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:24:22.172000) PID=2564
+
+Apr 29 17:24:45 C power_hook: Caught exception: KeyError('Z:\\NASA\\RTM\\Research\\LDI2\\Tecplot\\Sim-2_6_100_R\\Input',)
+Apr 29 17:24:45 E power_hook: Run aborted: Traceback (most recent call last):
+  File "c:\openmdao-framework\openmdao.lib\src\openmdao\lib\drivers\caseiterdriver.py", line 699, in _model_execute
+    self.workflow.run(case_id=self._server_cases[server][0].uuid)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 252, in run
+    super(Driver, self).run(force, ffd_order, case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 265, in execute
+    self.run_iteration()
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\driver.py", line 324, in run_iteration
+    wf.run(ffd_order=self.ffd_order, case_id=self._case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\workflow.py", line 89, in run
+    comp.run(ffd_order=ffd_order, case_id=case_id)
+  File "c:\openmdao-framework\openmdao.main\src\openmdao\main\component.py", line 540, in run
+    self.execute()
+  File "Z:\NASA\RTM\Research\LDI2\2\ncccomponent.py", line 521, in execute
+    print os.path.join(Path(prev_dir), 'ncc_pm_input.in')
+  File "Z:\NASA\RTM\Research\LDI2\2\pathname.py", line 14, in Path
+    return pathname[key]
+KeyError: 'Z:\\NASA\\RTM\\Research\\LDI2\\Tecplot\\Sim-2_6_100_R\\Input'
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:25:54.721000) PID=1716
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:26:51.378000) PID=3932
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:29:13.627000) PID=4052
+
+Apr 29 17:29:30 E geometry: return_code = -1073741510
+Error Output:
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:30:37.232000) PID=3908
+
+Apr 29 17:32:24 E PFE27_DMZ1/Sim-1: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode -1073741510: stdout:  stderr: 
+retrying...
+Apr 29 17:32:24 E PFE27_DMZ1/Sim-1: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode -1073741510: stdout:  stderr: 
+retrying...
+
+
+*********** BEGIN NEW LOG ************** (2014-04-29 17:32:39.522000) PID=2280
+
+Apr 30 07:11:21 E PFE27_DMZ1/Sim-2: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode 1: stdout:  stderr: Unable to open connection:
+Host does not exist
+retrying...
+Apr 30 07:11:21 E PFE27_DMZ1/Sim-2: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode 1: stdout:  stderr: Unable to open connection:
+Host does not exist
+retrying...
+Apr 30 07:11:22 E PFE27_DMZ1/Sim-2: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode 1: stdout:  stderr: Unable to open connection:
+Host does not exist
+retrying...
+
+
+*********** BEGIN NEW LOG ************** (2014-04-30 10:49:22.537000) PID=2696
+
+Apr 30 10:50:33 E PFE27_DMZ1: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode -1073741510: stdout:  stderr: 
+retrying...
+Apr 30 10:50:33 E PFE27_DMZ1: ['plink', '-batch', '-ssh', '-l', 'cheath1', 'dmzfs1.nas.nasa.gov', 'ls', '-1']: returncode -1073741510: stdout:  stderr: 
+retrying...
+
+
+*********** BEGIN NEW LOG ************** (2014-04-30 10:53:56.900000) PID=4764
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-30 15:43:24.462000) PID=3592
+
+Apr 30 15:43:34 E geometry: return_code = -1073741510
+Error Output:
+
+
+
+*********** BEGIN NEW LOG ************** (2014-04-30 16:04:14.241000) PID=4636
+

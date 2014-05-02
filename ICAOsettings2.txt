@@ -1,0 +1,5 @@
+"npss_reacting.Inlet_Pt", "npss_reacting.Inlet_Tt", "npss_reacting.Inlet_W", "npss_reacting.Globals_T4", "npss_reacting.Globals_FAR", "npss_nonreacting.Inlet_Pt", "npss_nonreacting.Inlet_Tt", "npss_nonreacting.Inlet_W", "npss_nonreacting.Globals_T4", "subcounter.power_level", "ncc_reacting.num_injectors", "ncc_reacting2.num_injectors"
+471.671, 1513.73, 1.5863, 3299.71, 0.0316, 471.671, 1513.73, 1.5863, 3299.71, 100, 5, 5
+415.486, 1459.01, 1.4386, 3129.28, 0.0290, 415.486, 1459.01, 1.4386, 3129.28, 85, 5, 5
+190.705, 1166.21, 0.7877, 2244.72, 0.0170, 190.705, 1166.21, 0.7877, 2244.72, 30, 3, 3
+100.962, 981.280, 0.4863, 1665.87, 0.0101, 100.962, 981.280, 0.4863, 1665.87, 7, 1, 1

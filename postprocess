@@ -1,0 +1,85 @@
+#!/bin/csh
+
+ln -sf ~/OpenNCC/open_ncc/bin/*.x ~/OpenNCC/open_ncc/bin/*dat .
+
+# Switch to correct modules
+source /usr/share/modules/init/csh
+module purge
+module load comp-intel/2013.5.192
+module load mpi-sgi/mpt.2.08r7
+module load tecplot/360_2012
+
+# Define debugger and corefile allowed size
+setenv MPI_COREDUMP_DEBUGGER `which idb`
+unlimit coredumpsize
+unlimit
+
+# Define number of processors used
+setenv NPROC $2
+
+# Post-process results
+echo " "
+echo " postprocessing "
+echo " "
+
+./on_consolidate.x $NPROC
+
+mkdir /tmp/$3
+cp open_ncc_results.db open_ncc_params.out open_ncc_cv_model.db open_ncc_cs_model.db open_ncc_nodal.db open_ncc_db_size.out post_openncc.x /tmp/$3
+( cd /tmp/$3 && exec /tmp/$3/post_openncc.x tecplot)
+cp /tmp/$3/tecplot.dat .
+rm -rf /tmp/$3
+
+./open_post-1d.x
+
+if ($1 == "/run_reacting") then
+    ./open_droplet_results.x tecplot
+endif
+
+if ($1 == "/run_reacting2") then
+    ./open_droplet_results.x tecplot
+endif
+
+# Create new restart and archive directories
+rm -rf /nobackup/cheath1/Archive/$3
+mkdir /nobackup/cheath1/Archive/$3
+
+# Save all files to archive
+cp open_ncc_params* /nobackup/cheath1/Archive/$3
+cp open_ncc_results* /nobackup/cheath1/Archive/$3
+cp open_ncc_cpu_wts* /nobackup/cheath1/Archive/$3
+cp open_ncc_spray_on_cells* /nobackup/cheath1/Archive/$3
+cp open_ncc_liquid_params* /nobackup/cheath1/Archive/$3
+cp open_ncc_liquid_results* /nobackup/cheath1/Archive/$3
+cp *.in* /nobackup/cheath1/Archive/$3
+cp open_ncc_debug.out.1 /nobackup/cheath1/Archive/$3
+cp metis* /nobackup/cheath1/Archive/$3
+cp Sim* /nobackup/cheath1/Archive/$3
+cp output.log /nobackup/cheath1/Archive/$3
+cp python.stdout /nobackup/cheath1/Archive/$3
+cp debug.txt /nobackup/cheath1/Archive/$3
+
+# Clean up cwd
+rm -f *checksum*
+rm -f *debug*
+rm -f open_ncc_params*
+rm -f open_ncc_results_aux-*
+rm -f open_ncc_results_var*
+rm -f open_ncc_results-*
+rm -f open_ncc_results_sources_liq-*
+rm -f open_ncc_cpu_wts*
+rm -f open_ncc_spray_on_cells*
+rm -f patran.out
+
+cp -f *.db* /nobackup/cheath1/Archive/$3
+cp -f *.out* /nobackup/cheath1/Archive/$3
+
+# Create Tecplot macro
+python write_macro.py $1
+
+# Run Tecplot macro
+tec360 -b -debug debug.txt ProcessResults.mcr
+
+echo " "
+echo " END OF BATCH FILE commands"
+echo " "

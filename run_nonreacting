@@ -1,0 +1,60 @@
+#!/bin/csh
+#  PBS script file
+#
+#  Submit this script using the command:
+#
+#       qsub preprocess_run_nonreacting
+#
+#  (RTJones or Pleiades
+#   each node has only 8 processors
+#   and you should use select=2:ncpus=8
+#   for example if you are using 16 processors)
+#
+#  Also, it is better to use  mpiexec
+#  versus mpirun -np $NPROC  since mpiexec
+#  also runs some other stuff besides mpirun
+#------------------------------------------------
+
+#PBS -S /bin/csh
+#PBS -W block=true
+#PBS -j oe
+#PBS -m be 
+#PBS -W group_list=a1315
+
+# Switch to correct modules
+source /usr/share/modules/init/csh
+module purge
+module load comp-intel/2013.5.192
+module load mpi-sgi/mpt.2.08r7
+module load apps/ae/tecplot360
+module list
+
+# Define debugger and corefile allowed size
+setenv MPI_COREDUMP_DEBUGGER `which idb`
+setenv MPI_BUFS_PER_HOST 512
+setenv MPI_BUFS_PER_PROC 512
+setenv MPI_MEMMAP_OFF 1
+setenv LD_PRELOAD $HOME/OpenNCC/getcwd_ld_preload_hack/libgetcwdHack.so
+
+unlimit coredumpsize
+unlimit
+
+setenv DIR_ORIG $PBS_O_WORKDIR
+
+cd $DIR_ORIG
+
+# Run case
+echo " "
+echo " =========================="
+echo " run db_open_ncc_db_solve.x "
+echo " "
+
+# If having problems with mpiexec, try adding -np $NPROC
+# mpiexec -np $NPROC ./db_open_ncc_db_solve.x
+
+several_tries mpiexec ./db_open_ncc_db_solve.x >& output.log
+
+echo " "
+echo "finished run"
+echo " "
+echo " =========================="

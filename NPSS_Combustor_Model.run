@@ -1,0 +1,272 @@
+setThermoPackage("Janaf");
+// Low-order NPSS model used to calculate exit pressure of combustor
+// for given upstream velocity, temperature, FAR and flow path areas
+//------------------------------------------------------------------//  
+// --------------------------- NPSS Model --------------------------//
+//------------------------------------------------------------------// 
+
+Element Globals {
+    real T4 = 3200.0;
+    real FAR = 0.0;
+}
+
+// --------------------------------------
+//      FlowStart Combustor Air (Primary)
+// --------------------------------------
+FlowStart Inlet {
+
+    Tt = 1513.73;           // (degR) 878.4 K         Uncomment for SLTO Power Setting    
+    Pt = 471.671;           // (psi) 31.827 atm       Uncomment for SLTO Power Setting    
+    W = 1.58633;            // (lbm/s)   
+    Fl_O.Aphy = 6.0;        // Initial Guess
+}		
+
+Bleed Bld1 {
+    
+    Fl_O.MN = 0.2;
+
+    BleedOutPort BldOut {
+        fracW = 0.15;
+    }
+}
+
+Duct Conv_Duct {
+    Fl_O.Aphy = 2.0;        // Initial Guess
+}
+
+Duct Div_Duct {
+	Fl_O.Aphy = 2.0;        // Initial Guess
+}
+
+// ------------------------------
+//     FuelStart Component
+// ------------------------------
+FuelStart Fuel {
+    Tfuel = 500;   // (R)
+    LHV = 18900;   // (BTU/lbm)
+} 
+
+// ------------------------------
+//      Combustor Component
+// ------------------------------
+RayleighBurner Comb {
+
+	effBase = 1.0; // Initial Guess
+	dPqPBase = 0.03; // Initial Guess
+	FAR = Globals.FAR; // Initial Guess   
+    
+	switchBurn = "FAR";
+
+    switchHotLoss = "CALCULATE"; // calculate Rayleigh pressure loss
+	
+	Independent indep_FAR {
+		varName = "FAR";
+		autoSetup = TRUE;
+	}
+    
+    Fl_O.Aphy = 6.0;        // Initial Guess
+}
+
+// -----------------------------------------------------
+//      FlowStart Combustor Air (Used for Liner Cooling)
+// -----------------------------------------------------
+Bleed Bld2 {
+    
+    BleedInPort BldIn {
+        Fl_O.Aphy = 4.0;        // Initial Guess
+    }
+    
+    Dependent dep_T4 {
+		eq_lhs = "Fl_O.Tt";
+		eq_rhs = "Globals.T4";  // (degR)    
+		autoSetup = TRUE;
+	}
+}
+
+FlowEnd end; 
+
+linkPorts("Inlet.Fl_O", "Bld1.Fl_I", "fs0");
+linkPorts("Bld1.Fl_O", "Conv_Duct.Fl_I", "fs1");
+linkPorts("Conv_Duct.Fl_O", "Div_Duct.Fl_I", "fs2");
+linkPorts("Div_Duct.Fl_O", "Comb.Fl_I", "fs3");
+linkPorts( "Fuel.Fu_O", "Comb.Fu_I", "fs4" );
+linkPorts("Comb.Fl_O", "Bld2.Fl_I", "fs5");
+linkPorts("Bld2.Fl_O", "end.Fl_I", "fs6");
+linkPorts("Bld1.BldOut", "Bld2.BldIn", "fs7");
+
+
+void run_nonreacting()
+{       
+    // --------------------------------------------------------
+    //     First run reacting given initial boundary conditions
+    // --------------------------------------------------------
+	setOption("switchDes","DESIGN");
+    
+    Comb.indep_FAR.autoSetup = TRUE;
+    Bld2.dep_T4.autoSetup = TRUE;    
+    
+	autoSolverSetup(); 
+    
+	solver.maxIterations = 2000;
+	solver.maxJacobians = 600;
+    
+	run();
+    
+    // ---------------------------------------------------------------------
+    //   Maintaining geometry and boundary conditions, run non-reacting    
+    // --------------------------------------------------------------------- 
+	setOption("switchDes", "OFFDESIGN");
+    
+    Comb.switchHotLoss = "INPUT";
+    Comb.dPqPRayleigh = 0;
+
+    Comb.indep_FAR.autoSetup = FALSE;
+    Bld2.dep_T4.autoSetup = FALSE;     	
+ 
+    Comb.FAR = 0.0;
+    
+    autoSolverSetup();	
+    
+	solver.maxIterations = 2000;
+	solver.maxJacobians = 600;
+    
+	run();
+   
+    cout << "--------------------------------------------------" << endl;
+	cout << "Combustor Non-Reacting Flow Station Parameters: " << endl; 
+	cout << "--------------------------------------------------" << endl; 
+	cout << "Upstream Area: " << Inlet.Fl_O.Aphy << " " << Inlet.Fl_O.Aphy.units << endl;  
+	cout << "Upstream Ps: "  << Inlet.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Upstream Pt: " << Inlet.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Upstream Ts: " << Inlet.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Upstream Tt: " << Inlet.Fl_O.Tt*.5555555555555 << " K" << endl;
+	cout << "Upstream rhos: " << Inlet.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Upstream Mass Flow: " << Inlet.Fl_O.W*0.45359237 << " kg/s" << endl; 
+	cout << "Upstream MN: " << Inlet.Fl_O.MN << endl; 
+	cout << "Upstream Speed: " << Inlet.Fl_O.V*0.3048 << " m/s" << endl; 
+	cout << "--------------------------------------------------" << endl; 
+	cout << "Throat Area: " << Conv_Duct.Fl_O.Aphy << " " << Conv_Duct.Fl_O.Aphy.units << endl;  
+	cout << "Throat Ps: "  << Conv_Duct.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Throat Pt: " << Conv_Duct.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Throat Ts: " << Conv_Duct.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Throat Tt: " << Conv_Duct.Fl_O.Tt*.5555555555555 << " K" << endl;
+	cout << "Throat rhos: " << Conv_Duct.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Throat Mass Flow: " << Conv_Duct.Fl_O.W*0.45359237 << " kg/s" << endl; 
+	cout << "Throat MN: " << Conv_Duct.Fl_O.MN << endl; 
+	cout << "Throat Speed: " << Conv_Duct.Fl_O.V*0.3048 << " m/s" << endl; 
+	cout << "--------------------------------------------------" << endl; 
+	cout << "Dilution Area: " << Bld1.Fl_O.Aphy << " " << Bld1.Fl_O.Aphy.units << endl;  
+	cout << "Dilution Ps: "  << Bld1.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Dilution Pt: " << Bld1.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Dilution Ts: " << Bld1.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Dilution Tt: " << Bld1.Fl_O.Tt*.5555555555555 << " K" << endl;
+	cout << "Dilution rhos: " << Bld1.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Dilution Mass Flow: " << Bld1.Fl_O.W*0.45359237 << " kg/s" << endl; 
+	cout << "Dilution MN: " << Bld1.Fl_O.MN << endl; 
+	cout << "Dilution Speed: " << Bld1.Fl_O.V*0.3048 << " m/s" << endl;    
+	cout << "--------------------------------------------------" << endl;
+	cout << "Comb Inlet Area: " << Comb.Fl_O.Aphy << " " << Comb.Fl_O.Aphy.units << endl;  
+	cout << "Comb Inlet Ps: "  << Comb.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Comb Inlet Pt: " << Comb.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Comb Inlet Ts: " << Comb.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Comb Inlet Tt: " << Comb.Fl_O.Tt*.5555555555555 << " K" << endl;
+	cout << "Comb Inlet FAR: " << Comb.FAR << endl;     
+	cout << "Comb Inlet rhos: " << Comb.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Comb Inlet Mass Flow: " << Comb.Fl_O.W*0.45359237 << " kg/s" << endl; 
+	cout << "Fuel Mass Flow: " << Comb.Wfuel*0.45359237 << " kg/s" << endl;
+    cout << "Fuel Tt: " << Fuel.Fu_O.Tfuel*.5555555555555 << " K" << endl;        
+	cout << "Comb Inlet MN: " << Comb.Fl_O.MN << endl; 
+	cout << "Comb Inlet Speed: " << Comb.Fl_O.V*0.3048 << " m/s" << endl;
+    cout << "Comb Inlet dPqPBase: " << Comb.dPqPBase << endl;     
+    cout << "Comb Inlet dPqPRayleigh: " << Comb.dPqPRayleigh << endl;       
+	cout << "--------------------------------------------------" << endl;
+	cout << "Comb Exit Area: " << Bld2.Fl_O.Aphy << " " << Bld2.Fl_O.Aphy.units << endl;  
+	cout << "Comb Exit Ps: "  << Bld2.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Comb Exit Pt: " << Bld2.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Comb Exit Ts: " << Bld2.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Comb Exit Tt: " << Bld2.Fl_O.Tt*.5555555555555 << " K" << endl;   
+	cout << "Comb Exit rhos: " << Bld2.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Comb Exit Mass Flow: " << Bld2.Fl_O.W*0.45359237 << " kg/s" << endl;  
+	cout << "Comb Exit MN: " << Bld2.Fl_O.MN << endl; 
+	cout << "Comb Exit Speed: " << Bld2.Fl_O.V*0.3048 << " m/s" << endl;    
+	cout << "--------------------------------------------------" << endl;
+}
+
+// ----------------------------------------------------
+//     Run reacting given initial boundary conditions
+// ----------------------------------------------------
+void run_reacting()
+{
+
+	setOption("switchDes","DESIGN");
+
+    Comb.indep_FAR.autoSetup = TRUE;
+    Bld2.dep_T4.autoSetup = TRUE;
+    
+    autoSolverSetup();
+    
+	solver.maxIterations = 1000;
+	solver.maxJacobians = 600;
+    
+	run();
+
+    cout << "--------------------------------------------------" << endl;
+	cout << "Combustor Reacting Flow Station Parameters: " << endl; 
+	cout << "--------------------------------------------------" << endl; 
+	cout << "Upstream Area: " << Inlet.Fl_O.Aphy << " " << Inlet.Fl_O.Aphy.units << endl;  
+	cout << "Upstream Ps: "  << Inlet.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Upstream Pt: " << Inlet.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Upstream Ts: " << Inlet.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Upstream Tt: " << Inlet.Fl_O.Tt*.5555555555555 << " K" << endl;
+	cout << "Upstream rhos: " << Inlet.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Upstream Mass Flow: " << Inlet.Fl_O.W*0.45359237 << " kg/s" << endl; 
+	cout << "Upstream MN: " << Inlet.Fl_O.MN << endl; 
+	cout << "Upstream Speed: " << Inlet.Fl_O.V*0.3048 << " m/s" << endl; 
+	cout << "--------------------------------------------------" << endl; 
+	cout << "Throat Area: " << Conv_Duct.Fl_O.Aphy << " " << Conv_Duct.Fl_O.Aphy.units << endl;  
+	cout << "Throat Ps: "  << Conv_Duct.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Throat Pt: " << Conv_Duct.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Throat Ts: " << Conv_Duct.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Throat Tt: " << Conv_Duct.Fl_O.Tt*.5555555555555 << " K" << endl;
+	cout << "Throat rhos: " << Conv_Duct.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Throat Mass Flow: " << Conv_Duct.Fl_O.W*0.45359237 << " kg/s" << endl; 
+	cout << "Throat MN: " << Conv_Duct.Fl_O.MN << endl; 
+	cout << "Throat Speed: " << Conv_Duct.Fl_O.V*0.3048 << " m/s" << endl; 
+	cout << "--------------------------------------------------" << endl; 
+	cout << "Dilution Area: " << Bld1.Fl_O.Aphy << " " << Bld1.Fl_O.Aphy.units << endl;  
+	cout << "Dilution Ps: "  << Bld1.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Dilution Pt: " << Bld1.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Dilution Ts: " << Bld1.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Dilution Tt: " << Bld1.Fl_O.Tt*.5555555555555 << " K" << endl;
+	cout << "Dilution rhos: " << Bld1.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Dilution Mass Flow: " << Bld1.Fl_O.W*0.45359237 << " kg/s" << endl; 
+	cout << "Dilution MN: " << Bld1.Fl_O.MN << endl; 
+	cout << "Dilution Speed: " << Bld1.Fl_O.V*0.3048 << " m/s" << endl;    
+	cout << "--------------------------------------------------" << endl;
+	cout << "Comb Inlet Area: " << Comb.Fl_O.Aphy << " " << Comb.Fl_O.Aphy.units << endl;  
+	cout << "Comb Inlet Ps: "  << Comb.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Comb Inlet Pt: " << Comb.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Comb Inlet Ts: " << Comb.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Comb Inlet Tt: " << Comb.Fl_O.Tt*.5555555555555 << " K" << endl;
+	cout << "Comb Inlet FAR: " << Comb.FAR << endl;     
+	cout << "Comb Inlet rhos: " << Comb.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Comb Inlet Mass Flow: " << Comb.Fl_O.W*0.45359237 << " kg/s" << endl; 
+	cout << "Fuel Mass Flow: " << Comb.Wfuel*0.45359237 << " kg/s" << endl;
+    cout << "Fuel Tt: " << Fuel.Fu_O.Tfuel*.5555555555555 << " K" << endl;        
+	cout << "Comb Inlet MN: " << Comb.Fl_O.MN << endl; 
+	cout << "Comb Inlet Speed: " << Comb.Fl_O.V*0.3048 << " m/s" << endl;
+    cout << "Comb Inlet dPqPBase: " << Comb.dPqPBase << endl;     
+    cout << "Comb Inlet dPqPRayleigh: " << Comb.dPqPRayleigh << endl;    
+	cout << "--------------------------------------------------" << endl;
+	cout << "Comb Exit Area: " << Bld2.Fl_O.Aphy << " " << Bld2.Fl_O.Aphy.units << endl;  
+	cout << "Comb Exit Ps: "  << Bld2.Fl_O.Ps*6894.75729 << " Pa"<< endl; 
+	cout << "Comb Exit Pt: " << Bld2.Fl_O.Pt*6894.75729 << " Pa"<< endl; 
+	cout << "Comb Exit Ts: " << Bld2.Fl_O.Ts*.5555555555555 << " K" << endl;
+	cout << "Comb Exit Tt: " << Bld2.Fl_O.Tt*.5555555555555 << " K" << endl;   
+	cout << "Comb Exit rhos: " << Bld2.Fl_O.rhos*16.0184634 << " kg/m3" << endl;
+	cout << "Comb Exit Mass Flow: " << Bld2.Fl_O.W*0.45359237 << " kg/s" << endl;  
+	cout << "Comb Exit MN: " << Bld2.Fl_O.MN << endl; 
+	cout << "Comb Exit Speed: " << Bld2.Fl_O.V*0.3048 << " m/s" << endl;    
+	cout << "--------------------------------------------------" << endl;
+   
+}

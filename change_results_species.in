@@ -1,0 +1,41 @@
+!-----------------------------------------------------------------------
+! *** Do NOT change the comment lines in this file ***
+! Currently supported chemistry changes are:
+!
+!      chem_model_old     -->   chem_model_new
+!        0 (Magnussen)           1 (Finite-Rate)
+!        1 (Finite-Rate)         1 (Finite-Rate)
+!        1 (Finite-Rate)         0 (Magnussen)
+!
+!-----------------------------------------------------------------------
+1  ! = chem_model_new  (0= Magnussen, 1= Finite-Rate)
+!-----------------------------------------------------------------------
+! Magnussen chemistry info (applies only to OLD or NEW chemistry
+!                           since Magn --> Magn is not permitted).
+! You MUST include these 4 lines even if neither OLD or NEW is Magnussen.
+!-----------------------------------------------------------------------
+FUEL CH4 END
+OXID  O2 END
+1  ! stochiometric coeff of  CO2  in global reaction step
+2  ! stochiometric coeff of  H2O  in global reaction step
+!-----------------------------------------------------------------------
+! NEW Finite-Rate chemistry species list (from new ncc_chemistry.in).
+! This section is NOT required if NEW = Magnussen,
+! but this section is required if NEW = Finite-Rate.
+! You MUST include the keyword "END" after listing all the new species.
+! The number of lines does not matter.
+! The maximum number of species per line is 50.
+!-----------------------------------------------------------------------
+C11H21 CO2 CO O2 O OH N2 H2 H H2O HO2 NO N2O N CH END
+!-----------------------------------------------------------------------
+! OPTIONAL DATA (this section is NOT required).
+!  Map a single or multiple OLD species to a single NEW species.
+!  You may create multiple maps.
+!  This section only applies when both OLD and NEW are Finite-Rate.
+!  Each "map" can be a single line or several lines, as long as
+!  the keywork "MAP_TO" separates the "old" species from the
+!  single "new" species.
+!-----------------------------------------------------------------------
+1  ! number of "old  MAP_TO  new" data sets
+C12H23   MAP_TO
+C11H21

@@ -1,0 +1,49 @@
+#!/bin/csh
+
+ln -sf ~/OpenNCC/open_ncc/bin/*.x ~/OpenNCC/open_ncc/bin/*dat .
+
+# Switch to correct modules
+source /usr/share/modules/init/csh
+module purge
+module load comp-intel/2013.5.192
+module load mpi-sgi/mpt.2.08r7
+
+# Define debugger and corefile allowed size
+setenv MPI_COREDUMP_DEBUGGER `which idb`
+unlimit coredumpsize
+unlimit
+
+# Define number of processors used
+setenv NPROC $2
+setenv NLIQUID 0
+
+# Copy restart files to run directory
+cp /nobackup/cheath1/Archive/$3*/*.out* .
+cp /nobackup/cheath1/Archive/$3*/*.db* .
+cp /nobackup/cheath1/Archive/$3*/metis* .
+
+if( ! -e open_ncc_cv_model.db ) then 
+    ./patran_to_openncc.x Ditto Auto scale 0.0254
+endif 
+
+./chemistry_process.x
+
+if ($1 == "/run_reacting2") then
+    echo " "
+    echo " =============================================="
+    echo " Updating Chemistry Mechanism to 18-Step Model (C11H21)"
+    echo " "
+    ./open_change_results_species_1.5.x
+    ls
+    mv open_ncc_results.db.new open_ncc_results.db
+    mv open_ncc_params.out.new open_ncc_params.out
+    setenv NLIQUID 1
+endif
+
+if( ! -e metis.meshfile.epart.$NPROC ) then 
+    ./partition_openncc.x 1 $NPROC 
+endif 
+
+./open_gen_files.x $NPROC
+
+rm -rf open_ncc_wall_distance.db
